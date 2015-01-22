@@ -109,10 +109,22 @@ var makeSections = exports.makeSections = function(blocks) {
             token._slug = slug;
             token._origText = token.text;
             // This token should start a new doc section
-            if (token.depth === 1) token._split = true;
+            if (token.depth <= 3) token._split = true;
             token.text = '<h' + token.depth + ' id="' + slug + '">' +
                          token.text + '</h' + token.depth + '>\n';
           }
+          
+          if (token.text) {
+            if (token.text.match(/.*(TODO): (.*)/g)) {
+              token.text = token.text.replace(/.*(TODO): (.*)/g, "<div class='bs-callout' id='callout-overview-not-both'><h4>$1</h4>$2</div>");          
+            }            
+
+            token.text = token.text.replace(/.*\!\!\!(.*):\s*(.*)/g, "<div class='bs-callout bs-callout-info' id='callout-overview-not-both'><h4>$1</h4>$2</div>");          
+            token.text = token.text.replace(/.*\!\!(.*):\s*(.*)/g, "<div class='bs-callout bs-callout-warning' id='callout-overview-not-both'><h4>$1</h4>$2</div>");          
+            token.text = token.text.replace(/.*\!(.*):\s*(.*)/g, "<div class='bs-callout bs-callout-danger' id='callout-overview-not-both'><h4>$1</h4>$2</div>");          
+            
+          }
+
           tokens.push(token);
           return tokens;
         }, [])
