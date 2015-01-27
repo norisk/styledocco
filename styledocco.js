@@ -29,8 +29,6 @@ var checkType = function(str) {
     return 'single';
   // Checking for multi line comments first to avoid matching single line
   // comment symbols inside multi line blocks.
-  } else if (str.match(commentRegexs.multiStart2)) {
-    return 'multistart';
   } else if (str.match(commentRegexs.multiStart)) {
     return 'multistart';
   } else if (str.match(commentRegexs.multiEnd)) {
@@ -65,7 +63,9 @@ var htmlEntities = function(str) {
 };
 
 var separate = function(css) {
-  var lines = css.split('\n');
+  var beforestop = css.split("%%STOPSTYLEGUIDE%%")[0];
+
+  var lines = beforestop.split('\n');
   var docs, code, line, blocks = [];
   while (lines.length) {
     docs = code = '';
