@@ -7,6 +7,8 @@ marked.setOptions({ sanitize: false, gfm: true });
 // the beginning of lines. 
 var commentRegexs = {
   single: /^\/\//, // Single line comments for Sass, Less and Stylus
+  multiStart2: /^\/\**/,
+  multiMiddle: /^\s\*\s/,
   multiStart: /^\/\*/,
   multiEnd: /\*\//
 };
@@ -27,6 +29,8 @@ var checkType = function(str) {
     return 'single';
   // Checking for multi line comments first to avoid matching single line
   // comment symbols inside multi line blocks.
+  } else if (str.match(commentRegexs.multiStart2)) {
+    return 'multistart';
   } else if (str.match(commentRegexs.multiStart)) {
     return 'multistart';
   } else if (str.match(commentRegexs.multiEnd)) {

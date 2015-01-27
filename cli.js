@@ -172,7 +172,8 @@ var cli = function(options) {
     '.sass': 'sass',
     '.scss': 'scss',
     '.less': 'lessc',
-    '.styl': 'stylus'
+    '.styl': 'stylus',
+    '.js': null
   };
 
   var log = options.verbose ? function(str) { console.log(str); }
