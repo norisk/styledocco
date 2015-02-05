@@ -102,6 +102,17 @@ var getFiles = function(inPath, cb) {
   });
 };
 
+var codeType = function(file) {
+  var fileType = path.extname(file).replace(".", "");
+  console.log(file);
+  switch (fileType) {
+    case "js" :
+      return "language-javascript";
+    default:
+      return "language-" + fileType;
+  }
+}
+
 // Make `link` objects for the menu.
 var menuLinks = function(files, basePath) {
   return files.map(function(file) {
@@ -109,16 +120,56 @@ var menuLinks = function(files, basePath) {
     parts.shift(); // Remove base directory name
     return {
       name: baseFilename(file),
+      parent: parts[parts.length-2],
+      depth: parts.length,
       href: htmlFilename(file, basePath),
       directory: parts[parts.length-1] || './'
     };
   })
   .reduce(function(links, link) {
-    if (links[link.directory] != null) {
-      links[link.directory].push(link);
+    if (link.depth <= 3) {
+      // basic folder
+      if (links[link.directory] === undefined) {
+        links[link.directory] = {
+          name: link.directory,
+          sublinks: [],
+          subdrops: []
+        };
+      }
+
+      links[link.directory].sublinks.push(link);
+
     } else {
-      links[link.directory] = [ link ];
+      // subfolder
+      if (links[link.parent] === undefined) {
+        links[link.parent] = {
+          name: link.parent,
+          sublinks: [],
+          subdrops: []
+        };
+      }
+
+      var current_subdrop;
+      links[link.parent].subdrops.forEach(function (subdrop) {
+        if (subdrop.name == link.directory) {
+          current_subdrop = subdrop;
+        }
+      });
+
+      if (current_subdrop == null) {
+        current_subdrop = {
+          name: link.directory,
+          sublinks: []
+        }
+        links[link.parent].subdrops.push(current_subdrop);
+      }
+
+
+      current_subdrop.sublinks.push(link)
+
     }
+
+
     return links;
   }, {});
 };
@@ -279,6 +330,7 @@ var cli = function(options) {
       }
     }
     var menu = menuLinks(resources.files, options.basePath);
+    console.log(menu);
     // Run files through preprocessor and StyleDocco parser.
     async.map(resources.files, function(file, cb) {
       async.parallel({
@@ -287,7 +339,7 @@ var cli = function(options) {
         docs: function(cb) {
           fs.readFile(file, 'utf8', function(err, code) {
             if (err != null) return cb(err);
-            cb(null, styledocco(code));
+            cb(null, styledocco(code, path.extname(file)));
           });
         }
       }, function(err, data) {
@@ -325,6 +377,7 @@ var cli = function(options) {
           html: resources.template({
             title: baseFilename(file.path),
             sections: file.docs,
+            codeType: codeType(file.path),
             project: { name: options.name, menu: menu },
             resources: {
               docs: { js: processJS(docsScript), css: processCSS(resources.docs.css) },

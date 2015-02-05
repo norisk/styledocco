@@ -119,8 +119,8 @@ var makeSections = exports.makeSections = function(blocks) {
           }
           
           if (token.text) {
-            if (token.text.match(/.*(TODO): (.*)/g)) {
-              token.text = token.text.replace(/.*(TODO): (.*)/g, "<div class='bs-callout' id='callout-overview-not-both'><h4>$1</h4>$2</div>");          
+            if (token.text.match(/.*(TODO): (.*)/gi)) {
+              token.text = token.text.replace(/.*(TODO): (.*)/gi, "<div class='bs-callout' id='callout-overview-not-both'><h4>$1</h4>$2</div>");          
             }            
 
             token.text = token.text.replace(/.*\!\!\!(.*):\s*(.*)/g, "<div class='bs-callout bs-callout-info' id='callout-overview-not-both'><h4>$1</h4>$2</div>");          
@@ -174,7 +174,14 @@ var makeSections = exports.makeSections = function(blocks) {
     });
 };
 
-module.exports = function(css) {
+module.exports = function(css, filetype) {
+  if (filetype == ".js") {
+      commentRegexs.single = /^\s*\/\//;
+      commentRegexs.multiStart2 = /^\s*\/\**/;
+      commentRegexs.multiMiddle = /^\s*\s\*\s/;
+      commentRegexs.multiStart = /^\s*\/\*/;
+      commentRegexs.multiEnd = /\s*\*\//;
+  }
   return makeSections(separate(css));
 };
 

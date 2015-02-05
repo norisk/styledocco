@@ -129,7 +129,7 @@ body {
 }
 .bs-docs-nav .navbar-nav > li > a {
   font-weight: 500;
-  color: #463265;
+  color: #332;
 }
 .bs-docs-nav .navbar-nav > li > a:hover,
 .bs-docs-nav .navbar-nav > .active > a,
@@ -1603,7 +1603,10 @@ h1[id] {
   white-space: pre-wrap;
   word-wrap: break-word;
 }
-
+.bs-docs-sidebar .nav>li>a.lv1 {
+  text-transform: uppercase;
+  color:#111;
+}
 .bs-docs-sidebar .nav>li>a:not(.lv1) {
   padding-top: 1px;
   padding-bottom: 1px;
@@ -1612,11 +1615,21 @@ h1[id] {
   font-weight: 400;
 }
 
-.bs-docs-sidebar .nav>.active>a:not(.lv1),
-.bs-docs-sidebar .nav>.active:hover>a:not(.lv1),
-.bs-docs-sidebar .nav>.active:focus>a:not(.lv1) {
+.bs-docs-sidebar .nav>li>a.lv2,
+.bs-docs-sidebar .nav>.active>a.lv2,
+.bs-docs-sidebar .nav>.active:hover>a.lv2,
+.bs-docs-sidebar .nav>.active:focus>a.lv2 {
   padding-left: 28px;
   font-weight: 500;
+}
+
+.bs-docs-sidebar .nav>li>a.lv3,
+.bs-docs-sidebar .nav>.active>a.lv3,
+.bs-docs-sidebar .nav>.active:hover>a.lv3,
+.bs-docs-sidebar .nav>.active:focus>a.lv3 {
+  padding-left: 38px;
+  font-weight: 500;
+  font-style:italic;
 }
 
 
@@ -1767,4 +1780,57 @@ pre[class*="language-"] {
 
 .token.entity {
   cursor: help;
+}
+
+
+
+
+
+
+.dropdown-submenu {
+    position: relative;
+}
+
+.dropdown-submenu>.dropdown-menu {
+    top: 0;
+    left: 100%;
+    margin-top: -6px;
+    margin-left: -1px;
+    -webkit-border-radius: 0 6px 6px 6px;
+    -moz-border-radius: 0 6px 6px;
+    border-radius: 0 6px 6px 6px;
+}
+
+.dropdown-submenu:hover>.dropdown-menu {
+    display: block;
+}
+
+.dropdown-submenu>a:after {
+    display: block;
+    content: " ";
+    float: right;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    border-width: 5px 0 5px 5px;
+    border-left-color: #ccc;
+    margin-top: 5px;
+    margin-right: -10px;
+}
+
+.dropdown-submenu:hover>a:after {
+    border-left-color: #fff;
+}
+
+.dropdown-submenu.pull-left {
+    float: none;
+}
+
+.dropdown-submenu.pull-left>.dropdown-menu {
+    left: -100%;
+    margin-left: 10px;
+    -webkit-border-radius: 6px 0 6px 6px;
+    -moz-border-radius: 6px 0 6px 6px;
+    border-radius: 6px 0 6px 6px;
 }
