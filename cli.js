@@ -104,7 +104,6 @@ var getFiles = function(inPath, cb) {
 
 var codeType = function(file) {
   var fileType = path.extname(file).replace(".", "");
-  console.log(file);
   switch (fileType) {
     case "js" :
       return "language-javascript";
@@ -330,7 +329,6 @@ var cli = function(options) {
       }
     }
     var menu = menuLinks(resources.files, options.basePath);
-    console.log(menu);
     // Run files through preprocessor and StyleDocco parser.
     async.map(resources.files, function(file, cb) {
       async.parallel({
