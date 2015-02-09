@@ -105,6 +105,8 @@ var getFiles = function(inPath, cb) {
 var codeType = function(file) {
   var fileType = path.extname(file).replace(".", "");
   switch (fileType) {
+    case "tpl" :
+      return "language-smarty";
     case "js" :
       return "language-javascript";
     default:
@@ -118,7 +120,7 @@ var menuLinks = function(files, basePath) {
     var parts = path.dirname(file).split(path.sep);
     parts.shift(); // Remove base directory name
     return {
-      name: baseFilename(file),
+      name: path.basename(file),
       parent: parts[parts.length-2],
       depth: parts.length,
       href: htmlFilename(file, basePath),
@@ -223,7 +225,8 @@ var cli = function(options) {
     '.scss': 'scss',
     '.less': 'lessc',
     '.styl': 'stylus',
-    '.js': null
+    '.js': null,
+    '.tpl': null
   };
 
   var log = options.verbose ? function(str) { console.log(str); }
@@ -373,7 +376,7 @@ var cli = function(options) {
         return {
           path: file.path,
           html: resources.template({
-            title: baseFilename(file.path),
+            title: path.basename(file.path),
             sections: file.docs,
             codeType: codeType(file.path),
             project: { name: options.name, menu: menu },

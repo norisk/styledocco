@@ -130,6 +130,7 @@ body {
 .bs-docs-nav .navbar-nav > li > a {
   font-weight: 500;
   color: #332;
+  text-transform: capitalize;
 }
 .bs-docs-nav .navbar-nav > li > a:hover,
 .bs-docs-nav .navbar-nav > .active > a,
@@ -1582,7 +1583,6 @@ h1[id] {
     StyleDocco Bootstrap styles
 \*------------------------------------*/
 .bs-docs-header h1 {
-  text-transform: capitalize;
 }
 
 .bs-example iframe {

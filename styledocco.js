@@ -7,10 +7,12 @@ marked.setOptions({ sanitize: false, gfm: true });
 // the beginning of lines. 
 var commentRegexs = {
   single: /^\/\//, // Single line comments for Sass, Less and Stylus
+  multiStartSmarty: /^\[\{\*/,
   multiStart2: /^\/\**/,
   multiMiddle: /^\s\*\s/,
   multiStart: /^\/\*/,
-  multiEnd: /\*\//
+  multiEnd: /\*\//,
+  multiEndSmarty: /\*\}\]/
 };
 
 // Make an URL slug from `str`.
@@ -26,12 +28,20 @@ var slugify = function(str) {
 var checkType = function(str) {
   // Treat multi start and end on same row as a single line comment.
   if (str.match(commentRegexs.multiStart) && str.match(commentRegexs.multiEnd)) {
+      return 'single';
+      // Checking for multi line comments first to avoid matching single line
+      // comment symbols inside multi line blocks.
+  } else if (str.match(commentRegexs.multiStartSmarty) && str.match(commentRegexs.multiEndSmarty)) {
     return 'single';
   // Checking for multi line comments first to avoid matching single line
   // comment symbols inside multi line blocks.
   } else if (str.match(commentRegexs.multiStart)) {
     return 'multistart';
+  } else if (str.match(commentRegexs.multiStartSmarty)) {
+    return 'multistart';
   } else if (str.match(commentRegexs.multiEnd)) {
+    return 'multiend';
+  } else if (str.match(commentRegexs.multiEndSmarty)) {
     return 'multiend';
   } else if ((commentRegexs.single != null) && str.match(commentRegexs.single)) {
     return 'single';
