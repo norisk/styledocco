@@ -186,7 +186,7 @@ var makeSections = exports.makeSections = function(blocks) {
 
 module.exports = function(css, filetype) {
   if (filetype == ".js") {
-      commentRegexs.single = /^\s*\/\//;
+      commentRegexs.single = /^\/\//;
       commentRegexs.multiStart2 = /^\s*\/\**/;
       commentRegexs.multiMiddle = /^\s*\s\*\s/;
       commentRegexs.multiStart = /^\s*\/\*/;
